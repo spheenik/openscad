@@ -262,7 +262,7 @@ module th_out_pt(rt,p,s,sg,thr,h,sh)
 			[cos(ae)*rt,sin(ae)*rt,z+sh],							// 3
 			[cos(ae)*rt,sin(ae)*rt,z+(3/4*p)+sh],					// 4
 			[cos(ae)*(rt+(5*h)),sin(ae)*(rt+(5*h)),z+sh+(3/8*p)]],	// 5
-		triangles = [
+		faces = [
 			[0,1,2],			// near face
 			[3,5,4],			// far face
 			[0,3,4],[0,4,1],	// left face
@@ -313,7 +313,7 @@ module th_in_pt(rt,p,s,sg,thr,h,sh)
 			[cos(ae)*(rt+(5*h)),sin(ae)*(rt+(5*h)),z+sh],			//3
 			[cos(ae)*rt,sin(ae)*rt,z+(3/8*p)+sh],					//4
 			[cos(ae)*(rt+(5*h)),sin(ae)*(rt+(5*h)),z+(3/4*p)+sh]],	//5
-		triangles = [
+		faces = [
 			[0,1,2],			// near face
 			[3,5,4],			// far face
 			[0,3,4],[0,4,1],	// left face

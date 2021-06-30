@@ -1,4 +1,6 @@
-//$fn = 90;
+include <lib/ISOThread.scad>
+
+$fn = 360;
 
 n_rot = 5;
 rotmax = 360;
@@ -171,5 +173,56 @@ module bulb() {
     translate([0, 0, lamp_z]) sphere(5);
 }
 
-complete();
-//shell_support3();
+
+module hollow_cylinder(h, r1, r2, thk) {
+    difference() {
+        cylinder(h = h, r1 = r1, r2 = r2);
+        translate([0, 0, -0.01]) cylinder(h = h + 0.02, r1 = r1 - thk, r2 = r2 - thk);
+    }
+}
+
+module stand() {
+    
+    thread_dia = 28.5;
+    thread_pitch = 2;
+    socket_height = 45;
+    socket_thickness = 1.6;
+    
+    socket_inner_radius = thread_dia/2;
+    socket_outer_radius = socket_inner_radius + socket_thickness;
+    
+    stand_radius = socket_inner_radius/2;
+    
+    module socket() {
+        thread_in_pitch(thread_dia, socket_height, thread_pitch);		
+        hollow_cylinder(r1 = socket_outer_radius, r2 = socket_outer_radius, h = socket_height, thk = socket_thickness);
+    }
+    
+    thread_to_light = 23;
+    socket_z = lamp_z - thread_to_light - socket_height - base_thickness*2;
+    lower_cyl_height = 20;
+    upper_cyl_height = 20;
+    
+    stand_height = socket_z - lower_cyl_height - upper_cyl_height;
+    stand_z = lower_cyl_height;
+    upper_cyl_z = stand_z + stand_height;
+    
+    translate([0, 0, base_thickness]) {
+        difference() {
+            union() {
+                cylinder(h = base_thickness, r = socket_outer_radius);
+                translate([0, 0, base_thickness]) hollow_cylinder(r1 = socket_outer_radius, r2 = stand_radius, h = 20, thk = socket_thickness);
+                translate([0, 0, stand_z])        hollow_cylinder(r1 = stand_radius, r2 = stand_radius, h = stand_height, thk = socket_thickness);
+                translate([0, 0, upper_cyl_z])    hollow_cylinder(r1 = stand_radius, r2 = socket_outer_radius, h = 20, thk = socket_thickness);
+                translate([0, 0, socket_z]) socket();
+            };
+            translate([10, 0, 0]) rotate([0, 90, 0]) cylinder(h = 8, r = 4);
+        }
+    }
+    
+    
+    
+}
+
+//complete();
+stand();
